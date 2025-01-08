@@ -40,6 +40,13 @@ int main(void)
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
+    for (int i = 0; i < 8; ++i)
+    {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        EndDrawing();
+    }
+
     // Main game loop
     while (!WindowShouldClose())        // Detect window close button or ESC key
     {

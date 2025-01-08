@@ -1017,13 +1017,9 @@ void EnableCursor(void)
 // Disables cursor (lock cursor)
 void DisableCursor(void)
 {
-    // Reset mouse position within the window area before disabling cursor
-    SetMousePosition(CORE.Window.screen.width, CORE.Window.screen.height);
 
     glfwSetInputMode(platform.handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    // Set cursor position in the middle
-    SetMousePosition(CORE.Window.screen.width/2, CORE.Window.screen.height/2);
 
     if (glfwRawMouseMotionSupported()) glfwSetInputMode(platform.handle, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 
@@ -1654,6 +1650,15 @@ int InitPlatform(void)
     {
         if (glfwJoystickPresent(i)) strcpy(CORE.Input.Gamepad.name[i], glfwGetJoystickName(i));
     }
+
+    // Initialize mouse positions:
+    double xpos, ypos;
+    glfwGetCursorPos(platform.handle, &xpos, &ypos);
+    CORE.Input.Mouse.previousPosition.x = (float)xpos;
+    CORE.Input.Mouse.previousPosition.y = (float)ypos;
+    CORE.Input.Mouse.currentPosition.x = (float)xpos;
+    CORE.Input.Mouse.currentPosition.y = (float)ypos;
+    TRACELOG(LOG_WARNING, "%s: glfwGetCursorPos: %f %f", __func__, xpos, ypos);
     //----------------------------------------------------------------------------
 
     // Initialize timming system
